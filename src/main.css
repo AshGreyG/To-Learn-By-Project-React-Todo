@@ -1,3 +1,11 @@
 .wrapper {
   min-height: 100vh;
 }
+
+.form-input::placeholder {
+  color: grey;
+}
+
+.pointer {
+  cursor: pointer;
+}

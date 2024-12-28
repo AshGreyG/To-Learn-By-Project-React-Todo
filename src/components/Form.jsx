@@ -3,6 +3,9 @@
  * @description: Form() function is the component function of adding new todo items form
  */
 export default function Form() {
+
+  console.log("Form component has been initialized.");
+
   return (
     <form>
       <div className="input-group mb-3">
@@ -11,14 +14,14 @@ export default function Form() {
 
         <input 
           type="text"
-          className="form-control rounded-0 bg-transparent text-white rounded-1"
+          className="form-input form-control bg-dark text-white rounded-start"
           placeholder="Add new todo item here"
         />
 
         {/* @from-control: https://getbootstrap.com/docs/5.3/forms/form-control/ */}
 
-        <button className="btn btn-success text-white rounded-1">
-          Submit
+        <button className="btn btn-success text-white rounded-end text-lg">
+          +
         </button>
       </div>
     </form>
