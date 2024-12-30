@@ -20,7 +20,7 @@ export default function Form() {
 
         {/* @from-control: https://getbootstrap.com/docs/5.3/forms/form-control/ */}
 
-        <button className="btn btn-success text-white rounded-end text-lg">
+        <button className="btn btn-success text-white rounded-end">
           +
         </button>
       </div>
