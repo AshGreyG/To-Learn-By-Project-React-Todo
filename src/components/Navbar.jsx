@@ -4,11 +4,9 @@
  * @program:     components/Navbar()
  * @description: Navbar() function is the component function of navigation bar
  */
-export default function Navbar() {
+export default function Navbar({items, clearItems}) {
 
-  const clearItems = () => {
-
-  }
+  console.log("Navbar component has been initialized.");
 
   return (
     <nav className="navbar bg-dark px-5 py-3 border-bottom border-primary">
@@ -34,7 +32,8 @@ export default function Navbar() {
 
         <button
           className="btn btn-danger rounded-1 text-white"
-          onClick={clearItems}
+          onClick={() => clearItems()}
+          disabled={items.length === 0}
         >
           Clear Items
         </button>

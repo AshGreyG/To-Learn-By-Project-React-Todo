@@ -3,17 +3,19 @@ import React, { useState } from "react";
 /**
  * @program:     component/ListItem()
  * @description: ListItem() function is the component function of list items
- * @param {string} todoString  The content of ListItem
+ * @param {object} props  The content of ListItem
  */
-function ListItem(todoString) {
+function ListItem({id, text, changeItem, deleteItem}) {
+  
+  console.log(`List item ${id} has been initialized.`);
 
   const [isChecked, setIsChecked] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
-  const [currentContent, setCurrentContent] = useState(todoString.text);
+  const [currentContent, setCurrentContent] = useState(text);
 
-  // currentContent is designed to exchange data between plaintext element and text input element
+  // currentContent is designed to exchange data between <div> element and <input> element
   // 
-  // Form ▸ todoString ▸ currentContent ▸ id: showing-item-content
+  // Form ▸ props ▸ currentContent ▸ id: showing-item-content
   //                           ▴                     ▾
   //            handleCompletedEditing  ◂ id: editing-item-content
 
@@ -36,6 +38,10 @@ function ListItem(todoString) {
   const handleEditing = (event) => {
     setIsEditing(true);
     console.log(`This event comes from ${event.target.id}`);
+  }
+
+  const handleDeleting = (event) => {
+    deleteItem({ id : id, text : text});
   }
 
   // const handleCompletedEditing = (event) => {
@@ -64,18 +70,23 @@ function ListItem(todoString) {
   // This function can't deal with Chinese character!!!!
   // It's just a simple simulation
 
-  const handleCompletedEditing = (event) => {
+  const handleFlashEditing = (event) => {
     setCurrentContent(event.target.value);
-    if (event.target.value.includes("\\n")) {
-      setIsEditing(false);
-      console.log("User presses \"Enter\" key, the input will be closed.");
-    } else {
-      console.log(`Current content is "${event.target.value}"`);
-    }
+    console.log(`Current content is "${event.target.value}"`);
+  }
+
+  const handleSubmitEditContent = (event) => {
+    event.preventDefault();
+    setIsEditing(false);
+    changeItem({ id : id, text : currentContent});
+    console.log("Default submit has been prevented, exit the editing mode.");
   }
 
   return (
-    <li className="list-group-item bg-dark text-white justify-content-between align-items-center border rounded-1 m-2">
+    <li 
+      className="list-group-item bg-dark text-white justify-content-between align-items-center border rounded-1 m-2"
+      key={id}
+    >
       <div className="container d-flex-row m-0 p-0">
         <div className="row align-items-center">
           <div className="col-1">
@@ -90,7 +101,7 @@ function ListItem(todoString) {
           {!isEditing ? (
             <div 
               id="showing-item-content"
-              className="col-10"
+              className="col-9"
               style={{textDecoration: isChecked ? "line-through" : "none", 
                       color: isChecked ? "grey" : "white" }}
             >
@@ -98,18 +109,18 @@ function ListItem(todoString) {
             </div>
           ) : (
             <div
-              className="col-10 bg-dark"
-
+              className="col-9 bg-dark"
             >
-              <input 
-                id="editing-item-content"
-                className="bg-dark text-white border-0"
-                type="text"
-                value={currentContent}
-                onChange={handleCompletedEditing}
-                autoFocus={true}
-                enterKeyHint="go"
-              />
+              <form onSubmit={handleSubmitEditContent}>
+                <input 
+                  id="editing-item-content"
+                  className="bg-dark text-white border-0"
+                  type="text"
+                  value={currentContent}
+                  onChange={handleFlashEditing}
+                  autoFocus={true}
+                />
+              </form>
             </div>
           )}
 
@@ -125,20 +136,49 @@ function ListItem(todoString) {
             {/* @pointer: Not bootstrap class, see ../main.css */}
 
           </div>
+
+          <div className="col-1">
+            <i 
+              id="click-to-delete-item-content"
+              className="bi bi-trash text-danger pointer"
+              onClick={handleDeleting}
+            />
+          </div>
         </div>
       </div>
     </li>
   )
 }
 
-function List() {
+/**
+ * @program:
+ * @description:  List() function is the component function of List whose sub-elements are ListItem
+ * @param {Object} param0 This is an anonymous parameter.
+ * @param {Object[]} param0.items todoItems
+ * @param {}
+ */
+function List({items, changeItem, deleteItem}) {
+
+  console.log("List component has been initialized.");
+
   return (
     <ul className="list-group rounded-0">
 
       {/* @list-group: https://getbootstrap.com/docs/5.3/components/list-group/ */}
 
-      <ListItem text={"This is a test"}/>
-      <ListItem />
+      { items.map((item) => { 
+        console.log(`Item ${item.id} has been created`, item);
+        return ( 
+          <ListItem 
+            id={item.id}
+            text={item.text}
+            changeItem={changeItem}
+            deleteItem={deleteItem}
+          /> 
+        ) 
+       })
+      }
+
     </ul>
   )
 }
