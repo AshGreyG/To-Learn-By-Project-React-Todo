@@ -1,19 +1,31 @@
-import React, { useState } from "react";
-
 /**
  * @program:     components/Form()
  * @description: Form() function is the component function of adding new todo items form
+ * @param {Object} param0 
+ * @param {Array<Object>} param0.items TodoForm component uses 'items' to copy to new items array.
+ * @param {String} param0.text         TodoForm component uses 'text' to flash the input text, that is to 
+ *                                     get the latest input text when submit button is clicked.
+ * @param {*} param0.onFlashText       TodoForm component uses 'onFlashText' function to flash the input
+ * @param {*} param0.onAddItem         TodoForm component uses 'onAddItem' function to add items
  */
-export default function TodoForm({addItem}) {
+export default function TodoForm({
+  items,
+  text,
+  onFlashText,
+  onAddItem
+}) {
 
   console.log("TodoForm component has been initialized.");
 
-  const [inputText, setInputText] = useState("");
+  const handleFlashEditing = (event) => {
+    onFlashText(event.target.value);
+    console.log("Input text now changes to ", text);
+  }
 
   const handleSubmitTodo = (event) => {
-    let item = { id : Date.now(), text : inputText};
-    addItem(item);
-    setInputText("");
+    let item = { id : Date.now(), text : text };
+    onAddItem([...items, item]);
+    onFlashText("");
     console.log("Add new todo item and clear the input", item);
   }
 
@@ -27,8 +39,8 @@ export default function TodoForm({addItem}) {
           type="text"
           className="form-input form-control bg-dark text-white rounded-start"
           placeholder="Add new todo item here"
-          value={inputText}
-          onChange={(event) => setInputText(event.target.value)}
+          value={text}
+          onChange={handleFlashEditing}
         />
 
         {/* @from-control: https://getbootstrap.com/docs/5.3/forms/form-control/ */}

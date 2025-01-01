@@ -13,49 +13,9 @@ export default function TodoApp() {
   const [todoItems, setTodoItems] = useState([]);
   // todoItems is an array of todo item objects
 
-  /**
-   * @program:       utility/addItem()
-   * @description:   addItem anonymous function is to add new item to the todoItems
-   * @param {object} item The new added item
-   */
-  const addItem = (item) => {
-    console.log("Add new item to the todoItems", item);
-    setTodoItems([...todoItems, item]);
-    console.log(todoItems);
-  }
+  const [formAddText, setFormAddText] = useState("");
 
-  /**
-   * @program:       utility/changeItem()
-   * @description:   changeItem anonymous function is to change the specific item in todoItems
-   * @param {object} item The item that needs to be changed
-   */
-  function changeItem(item) {
-    console.log(`Change the specific item`, item, this);
-
-    let temp = todoItems;
-    // Can't change todoItems using forEach function, we need a temp object arrays
-    // forEach changes the target array itself
-
-    temp.forEach((idx, text) => {
-      if (idx === item.id) {
-        text = item.text;
-      }
-    });
-    setTodoItems(temp);
-    console.log(todoItems);
-  }
-
-  const deleteItem = (item) => {
-    console.log("Delete the specific item", item);
-    setTodoItems(todoItems.filter((current) => current.id !== item.id));
-    console.log(todoItems);
-  }
-
-  /**
-   * @program:     utility/clearItems()
-   * @description: clearItems anonymous function is to clear the todoItem
-   */
-  const clearItems = () => setTodoItems([]);
+  const [buttonEditText, setButtonEditText] = useState("");
 
   console.log("TodoApp has been initialized.");
 
@@ -66,7 +26,7 @@ export default function TodoApp() {
 
       <Navbar
         items={todoItems}
-        clearItems={clearItems}
+        onClearItems={setTodoItems}
       />
       <div className="container pt-5">
         <div className="col-12 col-lg-9 mx-auto mt-5 p-5 border border-light rounded-3 bg-white bg-opacity-10">
@@ -75,13 +35,17 @@ export default function TodoApp() {
           {/*          so col-12 equals to ordering them row by row */}
 
           <TodoForm
-            items={todoItems} 
-            addItem={addItem} 
+            items={todoItems}
+            text={formAddText}
+            onFlashText={setFormAddText}
+            onAddItem={setTodoItems}
           />
           <List 
-            items={todoItems} 
-            changeItem={changeItem}
-            deleteItem={deleteItem}
+            items={todoItems}
+            flashText={buttonEditText}
+            onFlashText={setButtonEditText}
+            onChangeItem={setTodoItems}
+            onDeleteItem={setTodoItems}
           />
         </div>
       </div>

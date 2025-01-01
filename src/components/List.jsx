@@ -3,9 +3,20 @@ import React, { useState } from "react";
 /**
  * @program:     component/ListItem()
  * @description: ListItem() function is the component function of list items
- * @param {object} props  The content of ListItem
+ * @param {Object} param0 j
+ * @param {Number} param0.id      // ListItem component uses 'id' to :w
+ * @param {*} param0.flashText 
+ * @param {*} param0.onFlashText 
+ * @param {*} param0.onChangeItem 
+ * @param {*} param0.onDeleteItem 
  */
-function ListItem({id, text, changeItem, deleteItem}) {
+function ListItem({
+  id, 
+  flashText, 
+  onFlashText,
+  onChangeItem, 
+  onDeleteItem
+}) {
   
   console.log(`List item ${id} has been initialized.`);
 
@@ -151,13 +162,22 @@ function ListItem({id, text, changeItem, deleteItem}) {
 }
 
 /**
- * @program:
+ * @program:      component/List()
  * @description:  List() function is the component function of List whose sub-elements are ListItem
- * @param {Object} param0 This is an anonymous parameter.
- * @param {Object[]} param0.items todoItems
- * @param {}
+ * @param {Object} param0 
+ * @param {*} param0.items        
+ * @param {*} param0.flashText
+ * @param {*} param0.onFlashText 
+ * @param {*} param0.onChangeItem 
+ * @param {*} param0.onDeleteItem 
  */
-function List({items, changeItem, deleteItem}) {
+function List({
+  items, 
+  flashText,
+  onFlashText,
+  onChangeItem, 
+  onDeleteItem
+}) {
 
   console.log("List component has been initialized.");
 
@@ -172,8 +192,10 @@ function List({items, changeItem, deleteItem}) {
           <ListItem 
             id={item.id}
             text={item.text}
-            changeItem={changeItem}
-            deleteItem={deleteItem}
+            flashText={flashText}
+            onFlashText={onFlashText}
+            onChangeItem={onChangeItem}
+            onDeleteItem={onDeleteItem}
           /> 
         ) 
        })

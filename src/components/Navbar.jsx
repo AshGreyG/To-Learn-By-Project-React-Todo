@@ -3,8 +3,14 @@
 /**
  * @program:     components/Navbar()
  * @description: Navbar() function is the component function of navigation bar
+ * @param {Object} param0 
+ * @param {*} param0.items        Navbar component uses 'items' to check if todoItems is empty
+ * @param {*} param0.onClearItems Navbar component uses setTodoItems to clear the todoItems
  */
-export default function Navbar({items, clearItems}) {
+export default function Navbar({
+  items,
+  onClearItems
+}) {
 
   console.log("Navbar component has been initialized.");
 
@@ -32,7 +38,7 @@ export default function Navbar({items, clearItems}) {
 
         <button
           className="btn btn-danger rounded-1 text-white"
-          onClick={() => clearItems()}
+          onClick={() => onClearItems()}
           disabled={items.length === 0}
         >
           Clear Items
