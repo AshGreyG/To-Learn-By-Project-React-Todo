@@ -4,8 +4,10 @@
  * @program:     components/Navbar()
  * @description: Navbar() function is the component function of navigation bar
  * @param {Object} param0 
- * @param {*} param0.items        Navbar component uses 'items' to check if todoItems is empty
- * @param {*} param0.onClearItems Navbar component uses setTodoItems to clear the todoItems
+ * @param {Array<Object>} param0.items        Navbar component uses 'items' to check if todoItems is empty
+ * @param {React.Dispatch<React.SetStateAction<never[]>>} param0.onClearItems 
+ *                                            Navbar component uses 'setTodoItems' function to clear 
+ *                                            the todoItems
  */
 export default function Navbar({
   items,
@@ -38,7 +40,7 @@ export default function Navbar({
 
         <button
           className="btn btn-danger rounded-1 text-white"
-          onClick={() => onClearItems()}
+          onClick={() => onClearItems([])}
           disabled={items.length === 0}
         >
           Clear Items

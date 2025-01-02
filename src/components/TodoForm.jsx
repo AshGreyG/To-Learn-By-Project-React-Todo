@@ -5,8 +5,10 @@
  * @param {Array<Object>} param0.items TodoForm component uses 'items' to copy to new items array.
  * @param {String} param0.text         TodoForm component uses 'text' to flash the input text, that is to 
  *                                     get the latest input text when submit button is clicked.
- * @param {*} param0.onFlashText       TodoForm component uses 'onFlashText' function to flash the input
- * @param {*} param0.onAddItem         TodoForm component uses 'onAddItem' function to add items
+ * @param {React.Dispatch<React.SetStateAction<never[]>>} param0.onFlashText
+ *                                     TodoForm component uses 'onFlashText' function to flash the input
+ * @param {React.Dispatch<React.SetStateAction<never[]>>} param0.onAddItem
+ *                                     TodoForm component uses 'onAddItem' function to add items
  */
 export default function TodoForm({
   items,

@@ -15,8 +15,6 @@ export default function TodoApp() {
 
   const [formAddText, setFormAddText] = useState("");
 
-  const [buttonEditText, setButtonEditText] = useState("");
-
   console.log("TodoApp has been initialized.");
 
   return (
@@ -42,8 +40,6 @@ export default function TodoApp() {
           />
           <List 
             items={todoItems}
-            flashText={buttonEditText}
-            onFlashText={setButtonEditText}
             onChangeItem={setTodoItems}
             onDeleteItem={setTodoItems}
           />

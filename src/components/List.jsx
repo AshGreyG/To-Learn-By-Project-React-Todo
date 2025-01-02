@@ -3,26 +3,34 @@ import React, { useState } from "react";
 /**
  * @program:     component/ListItem()
  * @description: ListItem() function is the component function of list items
- * @param {Object} param0 j
- * @param {Number} param0.id      // ListItem component uses 'id' to :w
- * @param {*} param0.flashText 
- * @param {*} param0.onFlashText 
- * @param {*} param0.onChangeItem 
- * @param {*} param0.onDeleteItem 
+ * @param {Object} param0 
+ * @param {Array<Object>} param0.items        ListItem component uses 'items' to get todoItems state
+ * @param {Object} param0.item                ListItem component uses 'item' to get corresponding item
+ * @param {React.Dispatch<React.SetStateAction<never[]>>} param0.onChangeItem 
+ *                                            ListItem component uses 'onChangeItem' function to handle
+ *                                            changing item, and to modify the todoItems state
+ * @param {React.Dispatch<React.SetStateAction<never[]>>} param0.onDeleteItem 
+ *                                            ListItem component uses 'onDeleteItem' function to handle
+ *                                            deleting item, and to modify the todoItems state
  */
 function ListItem({
-  id, 
-  flashText, 
-  onFlashText,
+  items,
+  item,
   onChangeItem, 
   onDeleteItem
 }) {
+
+  // Why we can't use {id, key} instead of {item} ?, if we use {id, key}
+  // to pass the state parameter, the content of ListItem will not re-render
+  // immediately, we should trigger the re-render action manually.
+
+  let initText = item.text;
   
-  console.log(`List item ${id} has been initialized.`);
+  console.log(`List item ${item.id} has been initialized.`);
 
   const [isChecked, setIsChecked] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
-  const [currentContent, setCurrentContent] = useState(text);
+  const [currentContent, setCurrentContent] = useState(initText);
 
   // currentContent is designed to exchange data between <div> element and <input> element
   // 
@@ -52,23 +60,19 @@ function ListItem({
   }
 
   const handleDeleting = (event) => {
-    deleteItem({ id : id, text : text});
+    let temp = items.filter((current) => current.id !== item.id);
+    console.log(temp);
+    onDeleteItem(temp);
   }
 
   // const handleCompletedEditing = (event) => {
-
   //   const validKeys = /^[a-zA-Z0-9\s]$/;
-
   //   if (event.key === "Enter") {
-
   //     // When user presses "Enter" key, the editing input will be closed.
-
   //     console.log("Editing input : \"Enter\" key has been pressed. Complete editing.");
   //     setIsEditing(false);
   //   } else if (validKeys.test(event.key)) {
-
   //     // When user enter 0-9 a-z 
-
   //     setCurrentContent(currentContent + event.key);
   //     console.log(`Editing input : ${event.key} key has been pressed. `, 
   //                 `Now the currentContent is "${currentContent}".`);
@@ -89,14 +93,20 @@ function ListItem({
   const handleSubmitEditContent = (event) => {
     event.preventDefault();
     setIsEditing(false);
-    changeItem({ id : id, text : currentContent});
-    console.log("Default submit has been prevented, exit the editing mode.");
+    let temp = items;
+    temp.forEach((current) => {
+      if (current.id === item.id) {
+        current.text = currentContent;
+      }
+    });
+    onChangeItem(temp);
+    console.log("Default submit has been prevented, exit the editing mode.", items);
   }
 
   return (
     <li 
       className="list-group-item bg-dark text-white justify-content-between align-items-center border rounded-1 m-2"
-      key={id}
+      key={item.id}
     >
       <div className="container d-flex-row m-0 p-0">
         <div className="row align-items-center">
@@ -116,7 +126,7 @@ function ListItem({
               style={{textDecoration: isChecked ? "line-through" : "none", 
                       color: isChecked ? "grey" : "white" }}
             >
-              {currentContent}
+              {item.text}
             </div>
           ) : (
             <div
@@ -165,18 +175,18 @@ function ListItem({
  * @program:      component/List()
  * @description:  List() function is the component function of List whose sub-elements are ListItem
  * @param {Object} param0 
- * @param {*} param0.items        
- * @param {*} param0.flashText
- * @param {*} param0.onFlashText 
- * @param {*} param0.onChangeItem 
- * @param {*} param0.onDeleteItem 
+ * @param {Array<Object>} param0.items List component uses 'items' to get todoItems state
+ * @param {React.Dispatch<React.SetStateAction<never[]>>} param0.onChangeItem 
+ *                                     List component uses 'onChangeItem' function to pass this function
+ *                                     to its son component, ListItem
+ * @param {React.Dispatch<React.SetStateAction<never[]>>} param0.onDeleteItem 
+ *                                     List component uses 'onDeleteItem' function to pass this function
+ *                                     to its son component, ListItem
  */
 function List({
   items, 
-  flashText,
-  onFlashText,
   onChangeItem, 
-  onDeleteItem
+  onDeleteItem,
 }) {
 
   console.log("List component has been initialized.");
@@ -190,10 +200,8 @@ function List({
         console.log(`Item ${item.id} has been created`, item);
         return ( 
           <ListItem 
-            id={item.id}
-            text={item.text}
-            flashText={flashText}
-            onFlashText={onFlashText}
+            items={items}
+            item={item}
             onChangeItem={onChangeItem}
             onDeleteItem={onDeleteItem}
           /> 
